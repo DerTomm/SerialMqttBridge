@@ -1,11 +1,18 @@
 package de.reitho.serialMqttBridge.config;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ConfigHandler {
+
+  private Logger logger = LoggerFactory.getLogger(ConfigHandler.class);
 
   private static ConfigHandler instance;
 
@@ -60,12 +67,16 @@ public class ConfigHandler {
    */
   private void readConfigurationFile() throws Exception {
 
-    InputStream input = null;
+    URL urlConfigFile = new URL(ConfigHandler.class.getProtectionDomain().getCodeSource().getLocation(), "config.properties");
+    File fileConfig = new File(urlConfigFile.toURI());
+    if (!fileConfig.exists()) {
+      logger.error("Could not find config.properties file. Please refer to https://github.com/DerTomm/SerialMqttBridge for configuration documentation.");
+      throw new FileNotFoundException("config.properties");
+    }
 
     try {
 
-      input = this.getClass().getResourceAsStream("/config.properties");
-      prop.load(input);
+      prop.load(new FileReader(fileConfig));
 
       /* Parse serial connection properties */
       serialPort = prop.getProperty("serialPort");
@@ -114,16 +125,6 @@ public class ConfigHandler {
     }
     catch (IOException ex) {
       throw ex;
-    }
-    finally {
-      if (input != null) {
-        try {
-          input.close();
-        }
-        catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
     }
   }
 
