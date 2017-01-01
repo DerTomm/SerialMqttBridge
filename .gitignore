@@ -19,3 +19,4 @@ hs_err_pid*
 
 #Further exclusions
 /logs/
+/dependency-reduced-pom.xml
