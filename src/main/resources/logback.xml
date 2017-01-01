@@ -19,7 +19,7 @@
 	</appender>
 
 	<!-- Send logging output to both console and log file -->
-	<root level="DEBUG" additivity="true">
+	<root level="INFO" additivity="true">
 		<appender-ref ref="LOGFILE" />
 		<appender-ref ref="STDOUT" />
 	</root>

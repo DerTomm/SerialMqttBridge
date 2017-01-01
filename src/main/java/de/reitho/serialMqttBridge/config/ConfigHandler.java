@@ -21,6 +21,10 @@ public class ConfigHandler {
   /* Logging properties */
   private boolean logSerialMessages;
 
+  /*  Publishing preprocessor plugin properties */
+  private String mqttPublishPreprocessorPlugin;
+  private String serialSendPreprocessorPlugin;
+
   /*********************************************************************************************************************************************************************
    * @throws Exception
    */
@@ -68,6 +72,10 @@ public class ConfigHandler {
 
       /* Parse logging properties */
       logSerialMessages = Boolean.parseBoolean(prop.getProperty("logSerialMessages"));
+
+      /*  Publishing preprocessor plugin properties */
+      mqttPublishPreprocessorPlugin = prop.getProperty("mqttPublishPreprocessorPlugin");
+      serialSendPreprocessorPlugin = prop.getProperty("serialSendPreprocessorPlugin");
 
     }
     catch (IOException ex) {
@@ -125,6 +133,20 @@ public class ConfigHandler {
    */
   public boolean logSerialMessages() {
     return logSerialMessages;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return the defined MQTT publish preprocessor plugin
+   */
+  public String getMqttPublishPreprocessorPlugin() {
+    return mqttPublishPreprocessorPlugin;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return the defined serial sending preprocessor plugin
+   */
+  public String getSerialSendPreprocessorPlugin() {
+    return serialSendPreprocessorPlugin;
   }
 
 }
