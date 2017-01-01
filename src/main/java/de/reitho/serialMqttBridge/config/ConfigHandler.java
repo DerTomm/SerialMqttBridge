@@ -11,11 +11,15 @@ public class ConfigHandler {
 
   private Properties prop;
 
+  /* Serial connection properties */
   private String serialPort;
   private int baudRate;
   private int dataBits;
   private int stopBits;
   private int parity;
+
+  /* Logging properties */
+  private boolean logSerialMessages;
 
   /*********************************************************************************************************************************************************************
    * @throws Exception
@@ -48,6 +52,7 @@ public class ConfigHandler {
       input = this.getClass().getResourceAsStream("/config.properties");
       prop.load(input);
 
+      /* Parse serial connection properties */
       serialPort = prop.getProperty("serialPort");
 
       try {
@@ -60,6 +65,9 @@ public class ConfigHandler {
       catch (NumberFormatException e) {
         throw e;
       }
+
+      /* Parse logging properties */
+      logSerialMessages = Boolean.parseBoolean(prop.getProperty("logSerialMessages"));
 
     }
     catch (IOException ex) {
@@ -110,6 +118,13 @@ public class ConfigHandler {
    */
   public int getParity() {
     return parity;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return flag whether serial messages should be logged
+   */
+  public boolean logSerialMessages() {
+    return logSerialMessages;
   }
 
 }

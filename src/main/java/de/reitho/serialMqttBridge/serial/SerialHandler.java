@@ -57,6 +57,17 @@ public class SerialHandler {
    * @param message
    */
   public void processMessage(String message) {
+
+    if (configHandler.logSerialMessages()) {
+      logSerialMessage(message);
+    }
+
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @param message
+   */
+  private void logSerialMessage(String message) {
     logger.info("Serial/IN: " + message);
   }
 
