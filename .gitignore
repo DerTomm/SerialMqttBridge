@@ -16,6 +16,9 @@ hs_err_pid*
 /.classpath
 /.project
 /.settings/
+<<<<<<< HEAD
 
 #Further exclusions
 /logs/
+=======
+>>>>>>> branch 'master' of https://github.com/DerTomm/SerialMqttBridge.git
