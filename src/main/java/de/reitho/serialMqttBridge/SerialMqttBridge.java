@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.reitho.serialMqttBridge.config.ConfigHandler;
+import de.reitho.serialMqttBridge.mqtt.MqttHandler;
 import de.reitho.serialMqttBridge.plugins.MqttPublishPreprocessingPlugin;
 import de.reitho.serialMqttBridge.plugins.SerialSendPreprocessingPlugin;
 import de.reitho.serialMqttBridge.serial.SerialHandler;
@@ -20,6 +21,9 @@ public class SerialMqttBridge {
 
   private ConfigHandler configHandler;
   private SerialHandler serialHandler;
+  private MqttHandler mqttHandler;
+
+  private boolean isInitialized = false;
 
   /*********************************************************************************************************************************************************************
    * @param args
@@ -41,19 +45,21 @@ public class SerialMqttBridge {
     try {
 
       // Get config handler instance
-      logger.info("Reading configuration file...");
+      logger.info("Reading configuration file");
       configHandler = ConfigHandler.getInstance();
 
       // Instantiate preprocessor plugins if defined in config
       loadPlugins();
 
-      System.out.println(mqttPublishPreprocessor);
-      System.out.println(serialSendPreprocessor);
-
       // Establish serial connection
-      logger.info("Building serial handler and establish connection...");
-      serialHandler = SerialHandler.getInstance(configHandler);
+      logger.info("Creating serial handler and establish connection");
+      serialHandler = SerialHandler.getInstance(this);
 
+      // Establish MQTT connection
+      logger.info("Creating MQTT handler and establish connection");
+      mqttHandler = MqttHandler.getInstance(this);
+
+      isInitialized = true;
     }
     catch (Exception e) {
       logger.error("An error occured.", e);
@@ -85,6 +91,8 @@ public class SerialMqttBridge {
       if (mqttPublishPreprocessor == null) {
         throw new Exception("Defined MQTT publish preproecessor plugin could not be found.");
       }
+
+      logger.info("Using MQTT publish preprocessor plugin " + mqttPublishPreprocessor);
     }
 
     /*
@@ -103,6 +111,50 @@ public class SerialMqttBridge {
       if (serialSendPreprocessor == null) {
         throw new Exception("Defined serial send preproecessor plugin could not be found.");
       }
+
+      logger.info("Using serial send preprocessor plugin " + serialSendPreprocessor);
     }
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return
+   */
+  public MqttPublishPreprocessingPlugin getMqttPublishPreprocessor() {
+    return mqttPublishPreprocessor;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return
+   */
+  public SerialSendPreprocessingPlugin getSerialSendPreprocessor() {
+    return serialSendPreprocessor;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return
+   */
+  public ConfigHandler getConfigHandler() {
+    return configHandler;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return
+   */
+  public SerialHandler getSerialHandler() {
+    return serialHandler;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return
+   */
+  public MqttHandler getMqttHandler() {
+    return mqttHandler;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return flag whether bridge is initialized and ready for message processing
+   */
+  public boolean isInitialized() {
+    return isInitialized;
   }
 }

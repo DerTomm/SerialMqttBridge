@@ -30,6 +30,9 @@ public class MySensorsTopicResolver implements MqttPublishPreprocessingPlugin {
   @Override
   public boolean processMessage(String message) throws Exception {
 
+    mqttTopicPath = "";
+    mqttPublishMessage = "";
+
     String[] topicTokens = message.split(";");
     for (int i = 0; i < topicTokens.length - 1; i++) {
       if (i > 0) {

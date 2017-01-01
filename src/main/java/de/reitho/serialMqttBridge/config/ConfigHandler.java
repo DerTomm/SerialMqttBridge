@@ -18,8 +18,18 @@ public class ConfigHandler {
   private int stopBits;
   private int parity;
 
+  /* MQTT properties */
+  private String mqttBrokerUrl;
+  private String mqttBrokerUsername;
+  private String mqttBrokerPassword;
+  private String mqttClientId;
+  private String mqttTopicPrefix;
+
   /* Logging properties */
-  private boolean logSerialMessages;
+  private boolean logSerialInbound;
+  private boolean logSerialOutbound;
+  private boolean logMqttInbound;
+  private boolean logMqttOutbound;
 
   /*  Publishing preprocessor plugin properties */
   private String mqttPublishPreprocessorPlugin;
@@ -70,8 +80,18 @@ public class ConfigHandler {
         throw e;
       }
 
+      /* Parse MQTT properties */
+      mqttBrokerUrl = prop.getProperty("mqttBrokerUrl");
+      mqttBrokerUsername = prop.getProperty("mqttBrokerUsername");
+      mqttBrokerPassword = prop.getProperty("mqttBrokerPassword");
+      mqttClientId = prop.getProperty("mqttClientId");
+      mqttTopicPrefix = prop.getProperty("mqttTopicPrefix");
+
       /* Parse logging properties */
-      logSerialMessages = Boolean.parseBoolean(prop.getProperty("logSerialMessages"));
+      logSerialInbound = Boolean.parseBoolean(prop.getProperty("logSerialInbound"));
+      logSerialOutbound = Boolean.parseBoolean(prop.getProperty("logSerialOutbound"));
+      logMqttInbound = Boolean.parseBoolean(prop.getProperty("logMqttInbound"));
+      logMqttOutbound = Boolean.parseBoolean(prop.getProperty("logMqttOutbound"));
 
       /*  Publishing preprocessor plugin properties */
       mqttPublishPreprocessorPlugin = prop.getProperty("mqttPublishPreprocessorPlugin");
@@ -129,10 +149,31 @@ public class ConfigHandler {
   }
 
   /*********************************************************************************************************************************************************************
-   * @return flag whether serial messages should be logged
+   * @return flag whether incoming serial messages should be logged
    */
-  public boolean logSerialMessages() {
-    return logSerialMessages;
+  public boolean logSerialInbound() {
+    return logSerialInbound;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return flag whether outgoing serial messages should be logged
+   */
+  public boolean logSerialOutbound() {
+    return logSerialOutbound;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return flag whether incoming MQTT messages should be logged
+   */
+  public boolean logMqttInbound() {
+    return logMqttInbound;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return flag whether outgoing MQTT messages should be logged
+   */
+  public boolean logMqttOutbound() {
+    return logMqttOutbound;
   }
 
   /*********************************************************************************************************************************************************************
@@ -147,6 +188,41 @@ public class ConfigHandler {
    */
   public String getSerialSendPreprocessorPlugin() {
     return serialSendPreprocessorPlugin;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return MQTT broker URL
+   */
+  public String getMqttBrokerUrl() {
+    return mqttBrokerUrl;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return MQTT broker username
+   */
+  public String getMqttBrokerUsername() {
+    return mqttBrokerUsername;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return MQTT broker password
+   */
+  public String getMqttBrokerPassword() {
+    return mqttBrokerPassword;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return MQTT client id
+   */
+  public String getMqttClientId() {
+    return mqttClientId;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return MQTT topic prefix
+   */
+  public String getMqttTopicPrefix() {
+    return mqttTopicPrefix;
   }
 
 }
