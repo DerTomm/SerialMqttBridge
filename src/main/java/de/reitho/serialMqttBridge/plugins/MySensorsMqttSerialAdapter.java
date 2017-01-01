@@ -1,9 +1,12 @@
 package de.reitho.serialMqttBridge.plugins;
 
-public class MySensorsTopicResolver implements MqttPublishPreprocessingPlugin {
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+public class MySensorsMqttSerialAdapter implements MqttPublishPreprocessingPlugin, SerialSendPreprocessingPlugin {
 
   private String mqttTopicPath;
   private String mqttPublishMessage;
+  private String serialMessage;
 
   /* ********************************************************************************************************************************************************************
    * (non-Javadoc)
@@ -11,7 +14,7 @@ public class MySensorsTopicResolver implements MqttPublishPreprocessingPlugin {
    */
   @Override
   public String getPluginName() {
-    return "MySensors MQTT Preprocessor Plugin";
+    return "MySensors MQTT<->Serial adapter plugin";
   }
 
   /* ********************************************************************************************************************************************************************
@@ -20,7 +23,7 @@ public class MySensorsTopicResolver implements MqttPublishPreprocessingPlugin {
    */
   @Override
   public String getPluginDescription() {
-    return "This plugin converts MySensors message format into topic and message for MQTT publishing by building the topic path using the ';' divider char.";
+    return "This plugin converts converts MySensors serial message format into topic and message for MQTT publishing and vice-versa.";
   }
 
   /* ********************************************************************************************************************************************************************
@@ -28,7 +31,11 @@ public class MySensorsTopicResolver implements MqttPublishPreprocessingPlugin {
    * @see de.reitho.serialMqttBridge.plugins.AbstractPreprocessorPlugin#processMessage(java.lang.String)
    */
   @Override
-  public boolean processMessage(String message) throws Exception {
+  public boolean processSerialMessage(String message) throws Exception {
+
+    if (message.length() == 0 || !message.contains(";")) {
+      return false;
+    }
 
     mqttTopicPath = "";
     mqttPublishMessage = "";
@@ -62,5 +69,46 @@ public class MySensorsTopicResolver implements MqttPublishPreprocessingPlugin {
   @Override
   public String getPublishMessage() {
     return mqttPublishMessage;
+  }
+
+  /* ********************************************************************************************************************************************************************
+   * (non-Javadoc)
+   * @see de.reitho.serialMqttBridge.plugins.SerialSendPreprocessingPlugin#processMessage(java.lang.String, org.eclipse.paho.client.mqttv3.MqttMessage)
+   */
+  @Override
+  public boolean processMqttMessage(String mqttTopic, String mqttTopicSubscribe, MqttMessage mqttMessage) throws Exception {
+
+    serialMessage = "";
+
+    /*
+     *  Get rid of subscribed topic prefix
+     */
+
+    // Handle possible topic wildcards
+    String mqttTopicPrefix = mqttTopicSubscribe.replaceAll("/#", "");
+    mqttTopicPrefix = mqttTopicPrefix.replaceAll("/+", "");
+
+    mqttTopic = mqttTopic.substring(mqttTopicPrefix.length());
+    if (mqttTopic.startsWith("/")) {
+      mqttTopic = mqttTopic.substring(1);
+    }
+    mqttTopic = mqttTopic.replaceAll("/", ";");
+
+    serialMessage = mqttTopic;
+    // Append payload if there is any
+    if (mqttMessage.getPayload().length > 0) {
+      serialMessage += ";" + new String(mqttMessage.getPayload());
+    }
+
+    return true;
+  }
+
+  /* ********************************************************************************************************************************************************************
+   * (non-Javadoc)
+   * @see de.reitho.serialMqttBridge.plugins.SerialSendPreprocessingPlugin#getSerialMessage()
+   */
+  @Override
+  public String getSerialMessage() {
+    return serialMessage;
   }
 }

@@ -80,7 +80,7 @@ public class SerialMqttBridge {
      */
     String configuredMqttPreprocessorPlugin = configHandler.getMqttPublishPreprocessorPlugin();
 
-    if (configuredMqttPreprocessorPlugin != null && configuredMqttPreprocessorPlugin.length() > 1) {
+    if (configuredMqttPreprocessorPlugin != null) {
       Set<Class<? extends MqttPublishPreprocessingPlugin>> mqttPreprocessorPlugins = reflections.getSubTypesOf(MqttPublishPreprocessingPlugin.class);
       for (Class<? extends MqttPublishPreprocessingPlugin> c : mqttPreprocessorPlugins) {
         if (c.getName().equalsIgnoreCase(configuredMqttPreprocessorPlugin)) {
@@ -100,7 +100,7 @@ public class SerialMqttBridge {
      */
     String configuredSerialPreprocessorPlugin = configHandler.getSerialSendPreprocessorPlugin();
 
-    if (configuredSerialPreprocessorPlugin != null && configuredSerialPreprocessorPlugin.length() > 1) {
+    if (configuredSerialPreprocessorPlugin != null) {
       Set<Class<? extends SerialSendPreprocessingPlugin>> serialPreprocessorPlugins = reflections.getSubTypesOf(SerialSendPreprocessingPlugin.class);
       for (Class<? extends SerialSendPreprocessingPlugin> c : serialPreprocessorPlugins) {
         if (c.getName().equalsIgnoreCase(configuredSerialPreprocessorPlugin)) {

@@ -69,7 +69,7 @@ public class SerialHandler {
      * If defined: Log message content
      */
     if (serialMqttBridge.getConfigHandler().logSerialInbound()) {
-      logSerialMessage(message);
+      logger.info("Serial/IN: " + message);
     }
 
     String publishTopic = "";
@@ -83,13 +83,13 @@ public class SerialHandler {
 
       try {
 
-        mqttPublishPreprocessor.processMessage(message);
+        mqttPublishPreprocessor.processSerialMessage(message);
         publishTopic = mqttPublishPreprocessor.getPublishTopic();
         publishMessage = mqttPublishPreprocessor.getPublishMessage();
 
       }
       catch (Exception e) {
-        logger.error("Error", e);
+        logger.error("Exception", e);
       }
     }
 
@@ -108,10 +108,25 @@ public class SerialHandler {
   }
 
   /*********************************************************************************************************************************************************************
-   * @param message
+   * @param serialMessage
    */
-  private void logSerialMessage(String message) {
-    logger.info("Serial/IN: " + message);
-  }
+  public void sendMessage(String serialMessage) {
 
+    /*
+     * If defined: Log outgoing serial message
+     */
+    if (serialMqttBridge.getConfigHandler().logSerialOutbound()) {
+      logger.info("Serial/Out: " + serialMessage);
+    }
+
+    /*
+     * Send out serial message
+     */
+    try {
+      serialPort.writeBytes((serialMessage + "\n").getBytes());
+    }
+    catch (SerialPortException e) {
+      logger.error("Exception", e);
+    }
+  }
 }

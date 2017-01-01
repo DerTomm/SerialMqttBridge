@@ -23,7 +23,8 @@ public class ConfigHandler {
   private String mqttBrokerUsername;
   private String mqttBrokerPassword;
   private String mqttClientId;
-  private String mqttTopicPrefix;
+  private String mqttTopicPublish;
+  private String mqttTopicSubscribe;
 
   /* Logging properties */
   private boolean logSerialInbound;
@@ -83,9 +84,16 @@ public class ConfigHandler {
       /* Parse MQTT properties */
       mqttBrokerUrl = prop.getProperty("mqttBrokerUrl");
       mqttBrokerUsername = prop.getProperty("mqttBrokerUsername");
+      if (mqttBrokerUsername.equals("0")) {
+        mqttBrokerUsername = null;
+      }
       mqttBrokerPassword = prop.getProperty("mqttBrokerPassword");
+      if (mqttBrokerPassword.equals("0")) {
+        mqttBrokerPassword = null;
+      }
       mqttClientId = prop.getProperty("mqttClientId");
-      mqttTopicPrefix = prop.getProperty("mqttTopicPrefix");
+      mqttTopicPublish = prop.getProperty("mqttTopicPublish");
+      mqttTopicSubscribe = prop.getProperty("mqttTopicSubscribe");
 
       /* Parse logging properties */
       logSerialInbound = Boolean.parseBoolean(prop.getProperty("logSerialInbound"));
@@ -95,7 +103,13 @@ public class ConfigHandler {
 
       /*  Publishing preprocessor plugin properties */
       mqttPublishPreprocessorPlugin = prop.getProperty("mqttPublishPreprocessorPlugin");
+      if (mqttPublishPreprocessorPlugin.equals("0")) {
+        mqttPublishPreprocessorPlugin = null;
+      }
       serialSendPreprocessorPlugin = prop.getProperty("serialSendPreprocessorPlugin");
+      if (serialSendPreprocessorPlugin.equals("0")) {
+        serialSendPreprocessorPlugin = null;
+      }
 
     }
     catch (IOException ex) {
@@ -219,10 +233,17 @@ public class ConfigHandler {
   }
 
   /*********************************************************************************************************************************************************************
-   * @return MQTT topic prefix
+   * @return MQTT subscribed topic
    */
-  public String getMqttTopicPrefix() {
-    return mqttTopicPrefix;
+  public String getMqttTopicSubscribe() {
+    return mqttTopicSubscribe;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return MQTT publishing topic
+   */
+  public String getMqttTopicPublish() {
+    return mqttTopicPublish;
   }
 
 }

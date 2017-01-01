@@ -6,7 +6,7 @@ public interface MqttPublishPreprocessingPlugin {
 
   public String getPluginDescription();
 
-  public boolean processMessage(String message) throws Exception;
+  public boolean processSerialMessage(String message) throws Exception;
 
   public String getPublishTopic();
 

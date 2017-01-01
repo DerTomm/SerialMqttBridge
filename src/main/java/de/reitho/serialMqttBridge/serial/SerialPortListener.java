@@ -48,7 +48,7 @@ public class SerialPortListener implements SerialPortEventListener {
         }
       }
       catch (SerialPortException ex) {
-        logger.error("Error", ex);
+        logger.error("Exception", ex);
       }
     }
   }
