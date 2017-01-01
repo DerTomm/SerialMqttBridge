@@ -4,16 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.reitho.serialMqttBridge.config.ConfigHandler;
-import jssc.SerialPort;
-import jssc.SerialPortException;
+import de.reitho.serialMqttBridge.serial.SerialHandler;
 
 public class SerialMqttBridge {
 
   Logger logger = LoggerFactory.getLogger(SerialMqttBridge.class);
 
   private ConfigHandler configHandler;
-
-  private SerialPort serialPort;
+  private SerialHandler serialHandler;
 
   /*********************************************************************************************************************************************************************
    * @param args
@@ -35,12 +33,12 @@ public class SerialMqttBridge {
     try {
 
       // Get config handler instance
-      logger.info("Reading configuration file");
+      logger.info("Reading configuration file...");
       configHandler = ConfigHandler.getInstance();
 
       // Establish serial connection
-      logger.info("Establishing serial connection");
-      establishSerialConnection();
+      logger.info("Building serial handler and establish connection...");
+      serialHandler = SerialHandler.getInstance(configHandler);
 
     }
     catch (Exception e) {
@@ -50,13 +48,4 @@ public class SerialMqttBridge {
 
   }
 
-  /*********************************************************************************************************************************************************************
-   * @throws SerialPortException
-   */
-  private void establishSerialConnection() throws SerialPortException {
-
-    serialPort = new SerialPort(configHandler.getSerialPort());
-    serialPort.openPort();
-    serialPort.setParams(configHandler.getBaudRate(), configHandler.getDataBits(), configHandler.getStopBits(), configHandler.getParity());
-  }
 }

@@ -1,6 +1,5 @@
 package de.reitho.serialMqttBridge.config;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,7 +45,7 @@ public class ConfigHandler {
 
     try {
 
-      input = new FileInputStream("config.properties");
+      input = this.getClass().getResourceAsStream("/config.properties");
       prop.load(input);
 
       serialPort = prop.getProperty("serialPort");
