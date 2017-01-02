@@ -49,6 +49,7 @@ public class SerialMqttBridge {
       configHandler = ConfigHandler.getInstance();
 
       // Instantiate preprocessor plugins if defined in config
+      logger.info("Searching for plugins");
       loadPlugins();
 
       // Establish serial connection
