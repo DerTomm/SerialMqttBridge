@@ -3,16 +3,10 @@ package de.reitho.serialMqttBridge.config;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class ConfigHandler {
-
-  private Logger logger = LoggerFactory.getLogger(ConfigHandler.class);
 
   private static ConfigHandler instance;
 
@@ -69,10 +63,6 @@ public class ConfigHandler {
 
     URL urlConfigFile = new URL(ConfigHandler.class.getProtectionDomain().getCodeSource().getLocation(), "config.properties");
     File fileConfig = new File(urlConfigFile.toURI());
-    if (!fileConfig.exists()) {
-      logger.error("Could not find config.properties file. Please refer to https://github.com/DerTomm/SerialMqttBridge for configuration documentation.");
-      throw new FileNotFoundException("config.properties");
-    }
 
     try {
 
@@ -81,16 +71,10 @@ public class ConfigHandler {
       /* Parse serial connection properties */
       serialPort = prop.getProperty("serial.port");
 
-      try {
-
-        baudRate = Integer.parseInt(prop.getProperty("serial.baudRate").trim());
-        dataBits = Integer.parseInt(prop.getProperty("serial.dataBits").trim());
-        stopBits = Integer.parseInt(prop.getProperty("serial.stopBits").trim());
-        parity = Integer.parseInt(prop.getProperty("serial.parity").trim());
-      }
-      catch (NumberFormatException e) {
-        throw e;
-      }
+      baudRate = Integer.parseInt(prop.getProperty("serial.baudRate").trim());
+      dataBits = Integer.parseInt(prop.getProperty("serial.dataBits").trim());
+      stopBits = Integer.parseInt(prop.getProperty("serial.stopBits").trim());
+      parity = Integer.parseInt(prop.getProperty("serial.parity").trim());
 
       /* Parse MQTT properties */
       mqttBrokerUrl = prop.getProperty("mqtt.brokerUrl").trim();
@@ -123,8 +107,8 @@ public class ConfigHandler {
       }
 
     }
-    catch (IOException ex) {
-      throw ex;
+    catch (Exception ex) {
+      throw new Exception("Could not read config.properties file. Please refer to https://github.com/DerTomm/SerialMqttBridge for configuration documentation.", ex);
     }
   }
 
