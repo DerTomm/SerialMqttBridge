@@ -79,46 +79,46 @@ public class ConfigHandler {
       prop.load(new FileReader(fileConfig));
 
       /* Parse serial connection properties */
-      serialPort = prop.getProperty("serialPort");
+      serialPort = prop.getProperty("serial.port");
 
       try {
 
-        baudRate = Integer.parseInt(prop.getProperty("baudRate"));
-        dataBits = Integer.parseInt(prop.getProperty("dataBits"));
-        stopBits = Integer.parseInt(prop.getProperty("stopBits"));
-        parity = Integer.parseInt(prop.getProperty("parity"));
+        baudRate = Integer.parseInt(prop.getProperty("serial.baudRate").trim());
+        dataBits = Integer.parseInt(prop.getProperty("serial.dataBits").trim());
+        stopBits = Integer.parseInt(prop.getProperty("serial.stopBits").trim());
+        parity = Integer.parseInt(prop.getProperty("serial.parity").trim());
       }
       catch (NumberFormatException e) {
         throw e;
       }
 
       /* Parse MQTT properties */
-      mqttBrokerUrl = prop.getProperty("mqttBrokerUrl");
-      mqttBrokerUsername = prop.getProperty("mqttBrokerUsername");
-      if (mqttBrokerUsername.equals("0")) {
+      mqttBrokerUrl = prop.getProperty("mqtt.brokerUrl").trim();
+      mqttBrokerUsername = prop.getProperty("mqtt.brokerUsername").trim();
+      if ("0".equals(mqttBrokerUsername)) {
         mqttBrokerUsername = null;
       }
-      mqttBrokerPassword = prop.getProperty("mqttBrokerPassword");
-      if (mqttBrokerPassword.equals("0")) {
+      mqttBrokerPassword = prop.getProperty("mqtt.brokerPassword").trim();
+      if ("0".equals(mqttBrokerPassword)) {
         mqttBrokerPassword = null;
       }
-      mqttClientId = prop.getProperty("mqttClientId");
-      mqttTopicPublish = prop.getProperty("mqttTopicPublish");
-      mqttTopicSubscribe = prop.getProperty("mqttTopicSubscribe");
+      mqttClientId = prop.getProperty("mqtt.clientId").trim();
+      mqttTopicPublish = prop.getProperty("mqtt.topicPublish").trim();
+      mqttTopicSubscribe = prop.getProperty("mqtt.topicSubscribe").trim();
 
       /* Parse logging properties */
-      logSerialInbound = Boolean.parseBoolean(prop.getProperty("logSerialInbound"));
-      logSerialOutbound = Boolean.parseBoolean(prop.getProperty("logSerialOutbound"));
-      logMqttInbound = Boolean.parseBoolean(prop.getProperty("logMqttInbound"));
-      logMqttOutbound = Boolean.parseBoolean(prop.getProperty("logMqttOutbound"));
+      logSerialInbound = Boolean.parseBoolean(prop.getProperty("logging.serialInbound").trim());
+      logSerialOutbound = Boolean.parseBoolean(prop.getProperty("logging.serialOutbound").trim());
+      logMqttInbound = Boolean.parseBoolean(prop.getProperty("logging.mqttInbound").trim());
+      logMqttOutbound = Boolean.parseBoolean(prop.getProperty("logging.mqttOutbound").trim());
 
       /*  Publishing preprocessor plugin properties */
-      mqttPublishPreprocessorPlugin = prop.getProperty("mqttPublishPreprocessorPlugin");
-      if (mqttPublishPreprocessorPlugin.equals("0")) {
+      mqttPublishPreprocessorPlugin = prop.getProperty("plugin.mqttPublishPreprocessor").trim();
+      if ("0".equals(mqttPublishPreprocessorPlugin)) {
         mqttPublishPreprocessorPlugin = null;
       }
-      serialSendPreprocessorPlugin = prop.getProperty("serialSendPreprocessorPlugin");
-      if (serialSendPreprocessorPlugin.equals("0")) {
+      serialSendPreprocessorPlugin = prop.getProperty("plugin.serialSendPreprocessor").trim();
+      if ("0".equals(serialSendPreprocessorPlugin)) {
         serialSendPreprocessorPlugin = null;
       }
 
