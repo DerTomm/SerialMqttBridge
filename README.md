@@ -29,7 +29,7 @@ The file contains the following parameters:
   </tr>
   <tr>
     <td>serial.port</td>
-    <td>___COM5___ (Windows), ___/dev/ttyS1___ (Linux)</td>
+    <td>COM5 (Windows), /dev/ttyS1 (Linux)</td>
     <td><br></td>
   </tr>
   <tr>
