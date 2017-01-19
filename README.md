@@ -1,4 +1,4 @@
-# SerialMqttBridge
+# Java Serial MQTT Bridge
 
 **Java application which forwards messages from serial ports to MQTT broker and vice-versa.**
 
@@ -29,7 +29,7 @@ The file contains the following parameters:
   </tr>
   <tr>
     <td>serial.port</td>
-    <td>COM5 | /dev/ttyS1</td>
+    <td>___COM5___ (Windows), ___/dev/ttyS1___ (Linux)</td>
     <td><br></td>
   </tr>
   <tr>
@@ -81,7 +81,7 @@ The file contains the following parameters:
   </tr>
   <tr>
     <td>mqtt.topicSubscribe</td>
-    <td>serialgateway-in</td>
+    <td>serialgateway-in/#</td>
     <td>This is the topic the bridge subscribes for messages. Wildcards '#' and '+' are supported.</td>
   </tr>
   <tr>
@@ -89,22 +89,22 @@ The file contains the following parameters:
   </tr>
   <tr>
     <td>logging.serialInbound</td>
-    <td>true | false</td>
+    <td>true, false</td>
     <td>Defines whether incoming serial messages should be logged.</td>
   </tr>
   <tr>
     <td>logging.serialOutbound</td>
-    <td>true | false</td>
+    <td>true, false</td>
     <td>Defines whether outgoing serial messages should be logged.</td>
   </tr>
   <tr>
     <td>logging.mqttInbound</td>
-    <td>true | false</td>
+    <td>true, false</td>
     <td>Defines whether incoming MQTT messages should be logged.</td>
   </tr>
   <tr>
     <td>logging.mqttOutbound</td>
-    <td>true | false</td>
+    <td>true, false</td>
     <td>Defines whether outgoing MQTT messages should be logged.</td>
   </tr>
   <tr>
@@ -121,6 +121,10 @@ The file contains the following parameters:
     <td>Name of the class which preprocesses the MQTT message before sending it out on serial interface.</td>
   </tr>
 </table>
+
+## System requirements
+
+The application needs Java Runtime version 1.8 to run. 
 
 ## Usage
 
