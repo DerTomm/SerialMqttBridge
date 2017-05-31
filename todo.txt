@@ -1,0 +1,1 @@
+- Automatic reconnect if connection to broker is lost
