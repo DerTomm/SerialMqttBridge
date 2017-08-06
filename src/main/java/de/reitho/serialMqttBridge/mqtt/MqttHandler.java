@@ -49,6 +49,7 @@ public class MqttHandler {
     mqttClient = new MqttClient(configHandler.getMqttBrokerUrl(), configHandler.getMqttClientId(), null);
     MqttConnectOptions connOpts = new MqttConnectOptions();
     connOpts.setCleanSession(true);
+    connOpts.setAutomaticReconnect(true);
 
     // Authentication
     if (configHandler.getMqttBrokerUsername() != null && configHandler.getMqttBrokerPassword() != null) {
