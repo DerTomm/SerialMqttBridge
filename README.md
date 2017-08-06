@@ -20,9 +20,9 @@ SerialMqttBridge gets configured with a text file called ___config.properties___
 The file contains the following parameters:
 <table class="tg">
   <tr>
-    <th>Config parameter</th>
-    <th>Example values</th>
-    <th>Note</th>
+    <th align="left">Config parameter</th>
+    <th align="left">Example values</th>
+    <th align="left">Note</th>
   </tr>
   <tr>
   <td colspan="3"><b>Serial connection properties</b></td>
