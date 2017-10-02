@@ -49,7 +49,7 @@ public class MySensorsCustomSerialMqttTimestampAdapter implements MqttPublishPre
 
     // If message is of type V_TRIPPED (16): add timestamp to payload
     if (mqttTopicPath.endsWith("/16")) {
-      mqttPublishMessage += ";" + (int) System.currentTimeMillis() / 1000;
+      mqttPublishMessage += ";" + System.currentTimeMillis();
     }
 
     return true;
