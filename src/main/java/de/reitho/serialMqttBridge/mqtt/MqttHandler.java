@@ -64,7 +64,7 @@ public class MqttHandler {
     mqttClient.connect(connOpts);
 
     // Subscribe to defined inbound topic
-    mqttClient.subscribe(configHandler.getMqttTopicSubscribe());
+    mqttClient.subscribe(configHandler.getMqttTopicSubscribe(), configHandler.getMqttQosSubscribe());
   }
 
   /*********************************************************************************************************************************************************************
@@ -74,7 +74,7 @@ public class MqttHandler {
   public void publishMessage(String messagePath, String message) {
 
     MqttMessage mqttMessage = new MqttMessage(message.getBytes());
-    mqttMessage.setQos(2);
+    mqttMessage.setQos(serialMqttBridge.getConfigHandler().getMqttQosPublish());
 
     String configuredTopicPublish = serialMqttBridge.getConfigHandler().getMqttTopicPublish();
     String mqttPublishTopic = configuredTopicPublish + "/" + messagePath;

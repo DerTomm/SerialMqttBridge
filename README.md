@@ -85,6 +85,16 @@ The file contains the following parameters:
     <td>This is the topic the bridge subscribes for messages. Wildcards '#' and '+' are supported.</td>
   </tr>
   <tr>
+    <td>mqtt.qosSubscribe</td>
+    <td>0</td>
+    <td>QoS which should be used for subscriptions.</td>
+  </tr>
+  <tr>
+    <td>mqtt.qosPublish</td>
+    <td>0</td>
+    <td>QoS which should be used for publications.</td>
+  </tr>
+  <tr>
     <td colspan="3"><b>Logging properties</b></td>
   </tr>
   <tr>
