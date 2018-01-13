@@ -26,6 +26,8 @@ public class ConfigHandler {
   private String mqttClientId;
   private String mqttTopicPublish;
   private String mqttTopicSubscribe;
+  private int mqttQosSubscribe;
+  private int mqttQosPublish;
 
   /* Logging properties */
   private boolean logSerialInbound;
@@ -89,6 +91,8 @@ public class ConfigHandler {
       mqttClientId = prop.getProperty("mqtt.clientId").trim();
       mqttTopicPublish = prop.getProperty("mqtt.topicPublish").trim();
       mqttTopicSubscribe = prop.getProperty("mqtt.topicSubscribe").trim();
+      mqttQosSubscribe = Integer.parseInt(prop.getProperty("mqtt.qosSubscribe", "0"));
+      mqttQosPublish = Integer.parseInt(prop.getProperty("mqtt.qosPublish", "0"));
 
       /* Parse logging properties */
       logSerialInbound = Boolean.parseBoolean(prop.getProperty("logging.serialInbound").trim());
@@ -229,6 +233,20 @@ public class ConfigHandler {
    */
   public String getMqttTopicPublish() {
     return mqttTopicPublish;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return
+   */
+  public int getMqttQosSubscribe() {
+    return mqttQosSubscribe;
+  }
+
+  /*********************************************************************************************************************************************************************
+   * @return
+   */
+  public int getMqttQosPublish() {
+    return mqttQosPublish;
   }
 
 }
