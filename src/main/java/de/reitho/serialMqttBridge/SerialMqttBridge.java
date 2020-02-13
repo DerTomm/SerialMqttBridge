@@ -3,6 +3,10 @@ package de.reitho.serialMqttBridge;
 import java.util.Set;
 
 import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +18,7 @@ import de.reitho.serialMqttBridge.serial.SerialHandler;
 
 public class SerialMqttBridge {
 
-  Logger logger = LoggerFactory.getLogger(SerialMqttBridge.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SerialMqttBridge.class);
 
   private MqttPublishPreprocessingPlugin mqttPublishPreprocessor;
   private SerialSendPreprocessingPlugin serialSendPreprocessor;
@@ -45,25 +49,25 @@ public class SerialMqttBridge {
     try {
 
       // Get config handler instance
-      logger.info("Reading configuration file");
+      LOGGER.info("Reading configuration file");
       configHandler = ConfigHandler.getInstance();
 
       // Instantiate preprocessor plugins if defined in config
-      logger.info("Searching for plugins");
+      LOGGER.info("Searching for plugins");
       loadPlugins();
 
       // Establish serial connection
-      logger.info("Creating serial handler and establish connection");
+      LOGGER.info("Creating serial handler and establish connection");
       serialHandler = SerialHandler.getInstance(this);
 
       // Establish MQTT connection
-      logger.info("Creating MQTT handler and establish connection");
+      LOGGER.info("Creating MQTT handler and establish connection");
       mqttHandler = MqttHandler.getInstance(this);
 
       isInitialized = true;
     }
     catch (Exception e) {
-      logger.error("An error occured.", e);
+      LOGGER.error("An error occured.", e);
       System.exit(1);
     }
 
@@ -74,7 +78,11 @@ public class SerialMqttBridge {
    */
   private void loadPlugins() throws Exception {
 
-    Reflections reflections = new Reflections();
+    Reflections reflections = new Reflections(
+        new ConfigurationBuilder()
+            .setUrls(ClasspathHelper.forPackage("de.reitho.serialMqttBridge.plugins", ClasspathHelper.contextClassLoader()))
+            .setScanners(new SubTypesScanner())
+            .filterInputsBy(new FilterBuilder().includePackage("de.reitho.serialMqttBridge.plugins")));
 
     /*
      *  Find all MQTT publishing preprocessor plugins and load the one the user defined in configuration file - otherwise skip plugin instantiation.
@@ -85,7 +93,7 @@ public class SerialMqttBridge {
       Set<Class<? extends MqttPublishPreprocessingPlugin>> mqttPreprocessorPlugins = reflections.getSubTypesOf(MqttPublishPreprocessingPlugin.class);
       for (Class<? extends MqttPublishPreprocessingPlugin> c : mqttPreprocessorPlugins) {
         if (c.getName().equalsIgnoreCase(configuredMqttPreprocessorPlugin)) {
-          mqttPublishPreprocessor = c.newInstance();
+          mqttPublishPreprocessor = c.getDeclaredConstructor().newInstance();
           break;
         }
       }
@@ -93,7 +101,7 @@ public class SerialMqttBridge {
         throw new Exception("Defined MQTT publish preproecessor plugin could not be found.");
       }
 
-      logger.info("Using MQTT publish preprocessor plugin " + mqttPublishPreprocessor);
+      LOGGER.info("Using MQTT publish preprocessor plugin " + mqttPublishPreprocessor);
     }
 
     /*
@@ -105,7 +113,7 @@ public class SerialMqttBridge {
       Set<Class<? extends SerialSendPreprocessingPlugin>> serialPreprocessorPlugins = reflections.getSubTypesOf(SerialSendPreprocessingPlugin.class);
       for (Class<? extends SerialSendPreprocessingPlugin> c : serialPreprocessorPlugins) {
         if (c.getName().equalsIgnoreCase(configuredSerialPreprocessorPlugin)) {
-          serialSendPreprocessor = c.newInstance();
+          serialSendPreprocessor = c.getDeclaredConstructor().newInstance();
           break;
         }
       }
@@ -113,7 +121,7 @@ public class SerialMqttBridge {
         throw new Exception("Defined serial send preproecessor plugin could not be found.");
       }
 
-      logger.info("Using serial send preprocessor plugin " + serialSendPreprocessor);
+      LOGGER.info("Using serial send preprocessor plugin " + serialSendPreprocessor);
     }
   }
 
