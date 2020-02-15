@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-			<Pattern>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>
 				<!-- %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n -->
-				%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n
-			</Pattern>
-		</encoder>
-	</appender>
+        %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n
+      </Pattern>
+    </encoder>
+  </appender>
 
-	<appender name="LOGFILE" class="ch.qos.logback.core.FileAppender">
-		<file>./logs/SerialMqttBridge.log</file>
-		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-			<Pattern>
+  <appender name="LOGFILE" class="ch.qos.logback.core.FileAppender">
+    <file>./logs/SerialMqttBridge.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>
 				<!-- %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n -->
-				%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n
-			</Pattern>
-		</encoder>
-	</appender>
+        %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n
+      </Pattern>
+    </encoder>
+  </appender>
 
 	<!-- Send logging output to both console and log file -->
-	<root level="INFO" additivity="true">
-		<appender-ref ref="LOGFILE" />
-		<appender-ref ref="STDOUT" />
-	</root>
+  <root level="INFO" additivity="true">
+    <appender-ref ref="LOGFILE" />
+    <appender-ref ref="STDOUT" />
+  </root>
 
 </configuration>

@@ -134,7 +134,7 @@ The file contains the following parameters:
 
 ## System requirements
 
-The application needs Java Runtime version 1.8 to run. 
+Starting with release 1.1 the application needs Java Runtime version 13 or later to run. Older releases can be used with Java 8.
 
 ## Usage
 
@@ -142,9 +142,23 @@ After downloading and extracting the release archive please check and modify the
 
 `java -jar serialMqttBridge-<VERSION>.jar`.
 
+## Developers
+
 Developers can clone the code and build the application using Maven:
 
 `mvn package`
+
+Please note: Unfortunately there is no Maven Central artifact of the used `jssc` library yet. So if you want to compile the code yourself you have to download the dependency from Github (https://github.com/java-native/jssc/releases/download/v2.9.1/jssc-2.9.1.jar) and import it into your local Maven repository:
+
+```
+mvn install:install-file \
+   -Dfile=<path-to-file> \
+   -DgroupId=com.github.java-native \
+   -DartifactId=jssc \
+   -Dversion=2.9.1 \
+   -Dpackaging=jar \
+   -DgeneratePom=true
+```
 
 If you want to create your own preprocessor plugin just implement the according interfaces in the _de.reitho.serialMqttBridge.plugins_ package, put the classes into the classpath and define them in the config file.
 
